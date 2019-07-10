@@ -17,12 +17,27 @@ new Vue({
     el:'#app',
     data:{
         cars:cars,
-        car:cars[0]
+        car: cars[0],
+        selectedCarindex: 0,
+        phoneVisibility: false,
+        searchtext: ''
     },
     methods:{
         selectCar:function(index){
             this.car = cars[index];
-
+            this.selectedCarindex = index;
+            this.phoneVisibility = false;
+        }
+    },
+    computed: {
+        phoneBtnText() {
+            return this.phoneVisibility == true ? 'Hide phone' : 'Show phone';
+        },
+        filteredCars() {
+            const filtered = this.cars.filter(item => {
+                return item.name.toLowerCase().indexOf(this.searchtext.toLowerCase()) > -1 || item.model.toLowerCase().indexOf(this.searchtext.toLowerCase()) > -1;
+            });
+            return filtered;
         }
     }
 })
