@@ -53,11 +53,49 @@
                     <button class="btn btn-outline-success mr-3" @click="phoneVisibility=!phoneVisibility"
                             v-text="phoneBtnText">Show phone
                     </button>
-                    <button class="btn btn-primary">Buy</button>
+                    <button class="btn btn-primary" @click="modalVisibility=true">Buy</button>
                 </div>
             </div>
         </div>
     </div>
+    <ul class="list-group pt-2" v-if="logs.length>=0">
+        <li class="list-group-item"
+            :class="{'list-group-item-success':log.status=='ok','list-group-item-secondary':log.status=='cancel'}"
+            v-for="log in logs">{{log.text}} {{log.date | mydate}}
+        </li>
+    </ul>
+
+    <div class="modal fade show" v-if="modalVisibility" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Do you want to buy this car?</h5>
+                    <button type="button" class="close"
+                            data-dismiss="modal"
+                            aria-label="Close"
+                            @click="modalVisibility=false"
+                    >
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Current car: <strong>{{car.name}}</strong></p>
+                    <ul>
+                        <li>Model <strong>{{car.model}}</strong></li>
+                        <li>Year <strong>{{car.year}}</strong></li>
+                        <li>Owner <strong>{{car.owner}}</strong></li>
+                    </ul>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" @click="cancelOrder">Cancel
+                    </button>
+                    <button type="button" class="btn btn-primary" @click="newOrder">Buy car</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-backdrop fade show" v-if="modalVisibility"></div>
 </div>
 <script src="vue.min.js"></script>
 <script src="app.js"></script>
